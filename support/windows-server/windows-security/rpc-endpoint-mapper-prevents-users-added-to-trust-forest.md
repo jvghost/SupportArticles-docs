@@ -45,6 +45,12 @@ You receive this message as in the following screenshot:
 
 When you enable enhanced logging, the logging information that you receive does not provide any additional information except errors that state that domain controllers from the trusted forest are not available. Network monitoring traces do not provide additional details.
 
+The following symptoms may also be observed:
+- The existing permissions of resources may show SIDs instead of group and account names, commonly called, SID Translation Failure.
+- LSP logs on the trusting DCs may show an error, 0xC0000022 (STATUS_ACCESS_DENIED),  "A process has requested access to an object, but has not been granted those access rights."
+- Clients in the trusted domain may see the error message, "Trust relationship between primary domain and trusted domain failed", 0xC000018C (STATUS_TRUSTED_DOMAIN_FAILURE)
+- In a network trace, the cleint will send an RPC auth packet after the server EPM acknowledges the bind. The client will then query for LSARPC (12345778-1234-ABCD-EF00-0123456789AB). The server will then respond with a MSRPC fault with status code, 0x00000005 (Access Denied)
+
 ## Cause
 
 When RPC Endpoint Mapper client authentication is enabled, unauthenticated RPC traffic from the trusted Active Directory forest is not accepted.
